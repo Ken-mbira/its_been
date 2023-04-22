@@ -39,7 +39,7 @@ fun SinceDisplay(modifier: Modifier = Modifier) {
 //                backgroundColor = Color.Transparent
             ) {
                 Text(
-                    modifier = modifier.padding(5.dp),
+                    modifier = modifier.padding(10.dp),
                     text = stringResource(R.string.example_date),
                     fontSize = 23.sp,
                     fontWeight = FontWeight.Bold
