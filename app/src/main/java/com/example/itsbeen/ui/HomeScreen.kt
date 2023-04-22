@@ -1,67 +1,46 @@
 package com.example.itsbeen.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.itsbeen.R
-import com.example.itsbeen.ui.reusable.SpinnerPicker
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    PeriodDisplay()
-}
-
-@Composable
-fun PeriodDisplay(modifier: Modifier = Modifier) {
-    Row(
+    val scrollState = rememberScrollState()
+    Column(
         modifier = modifier
             .padding(10.dp)
+            .fillMaxSize()
+            .verticalScroll(scrollState),
     ) {
-        Card(
-            modifier = modifier
-                .weight(5f)
-                .height(100.dp),
-            border = BorderStroke(1.dp, Color.Black)
+        PeriodDisplay()
+        Spacer(modifier = modifier.height(40.dp))
+        SinceDisplay()
+        EventListDisplay()
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = modifier.align(Alignment.CenterHorizontally),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = colorResource(R.color.deep_purple),
+                contentColor = Color.White
+            )
         ) {
-            Column(
-                modifier = modifier.padding(10.dp)
-            ) {
-                Text(
-                    text="12,121,121",
-                    fontSize = 25.sp
-                )
-                Spacer(modifier = modifier.height(5.dp))
-                Text(
-                    text="Twelve million, one hundred and twenty one thousand, one hundred and twenty one",
-                    fontSize = 12.sp
-                )
-            }
-        }
-        Spacer(modifier = modifier.width(5.dp))
-        Card(
-            modifier = modifier
-                .weight(2f)
-                .height(100.dp)
-        ) {
-            Column(
-                modifier = modifier
-                    .background(color = colorResource(R.color.faded_purple)),
-            ) {
-                SpinnerPicker(
-                    items = mutableListOf("Seconds", "Minutes", "Hours", "Days", "Week", "Month", "Year"),
-                )
-            }
+            Text(
+                modifier = modifier,
+                text= stringResource(R.string.create_new_memory)
+            )
         }
     }
 }
@@ -69,5 +48,5 @@ fun PeriodDisplay(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun Preview() {
-    PeriodDisplay()
+    HomeScreen()
 }

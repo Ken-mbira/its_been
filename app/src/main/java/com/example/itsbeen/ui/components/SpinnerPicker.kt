@@ -1,4 +1,4 @@
-package com.example.itsbeen.ui.reusable
+package com.example.itsbeen.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues

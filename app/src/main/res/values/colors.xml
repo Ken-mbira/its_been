@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="deep_purple">#201E50</color>
     <color name="faded_purple">#525B76</color>
+    <color name="light_grey">#C4C4C4</color>
+    <color name="faded_black">#B3000000</color>
 </resources>
