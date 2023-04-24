@@ -17,7 +17,9 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,25 +29,21 @@ import com.example.itsbeen.ui.SinceDisplay
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
     val textInput = remember { mutableStateOf("") }
-    val isFocused = remember { mutableStateOf(false) }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-            modifier = modifier.weight(1f)
-                .onFocusChanged { focusState -> isFocused.value = focusState.isFocused },
+            modifier = modifier.weight(1f),
             value = textInput.value,
             onValueChange = { newValue -> textInput.value = newValue},
             label = {
-                if(!isFocused.value){
-                    Text(
-                        text="Search",
-                        color= colorResource(R.color.faded_black),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text="Search",
+                    color= colorResource(R.color.faded_black),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = colorResource(R.color.light_grey),
