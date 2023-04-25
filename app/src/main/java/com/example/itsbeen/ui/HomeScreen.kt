@@ -1,5 +1,8 @@
 package com.example.itsbeen.ui
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,7 +25,22 @@ import com.example.itsbeen.R
 import com.example.itsbeen.ui.components.EventList
 import com.example.itsbeen.ui.components.SearchBar
 import com.example.itsbeen.ui.viewmodels.EventViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
+const val DATE_FORMAT = "yyyy/M/d"
+const val TAG = "HOME_SCREEN"
+@RequiresApi(Build.VERSION_CODES.O)
+fun parseStringToLocalDate(dateString: String): LocalDate? {
+    val splitDate = dateString.split("/")
+    return if(dateString != ""){
+        LocalDate.of(splitDate[0].toInt(),splitDate[1].toInt(),splitDate[2].toInt())
+    }else{
+        null
+    }
+}
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
 
@@ -40,7 +57,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(scrollState),
     ) {
-        PeriodDisplay()
+        Log.i(TAG, stagedEventState.value.toString())
+        PeriodDisplay(
+            modifier = modifier,
+            fromDate = parseStringToLocalDate(stagedEventState.value.date)
+        )
         Spacer(modifier = modifier.height(30.dp))
         SinceDisplay(
             modifier = modifier,

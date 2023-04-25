@@ -1,5 +1,6 @@
 package com.example.itsbeen.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,9 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.itsbeen.model.Duration
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.LazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 
 const val TAG = "SPINNER_PICKER"
 
@@ -27,7 +31,8 @@ const val TAG = "SPINNER_PICKER"
 @Composable
 fun SpinnerPicker(
     modifier: Modifier = Modifier,
-    items: MutableList<String>
+    items: MutableList<String>,
+    emitNewItem: (String) -> Unit = {}
 ) {
     items.add("")
     val itemHeight = 30.dp
@@ -35,13 +40,27 @@ fun SpinnerPicker(
     val listState: LazyListState = rememberLazyListState()
     val selectedIndex: LazyListSnapperLayoutInfo = rememberLazyListSnapperLayoutInfo(listState)
 
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.isScrollInProgress }
+            .filter { !it }
+            .collect {
+                if(selectedIndex.currentItem?.index != null){
+                    val currentItem = items[selectedIndex.currentItem?.index!!]
+                    if(currentItem != ""){
+                        emitNewItem(currentItem)
+//                        Log.i(TAG, currentItem)
+                    }
+                }
+            }
+    }
+
     Box {
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
                 .height(itemHeight * 3),
             state = listState,
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(8.dp),
         ) {items(items.count()) {item ->
             if(selectedIndex.currentItem?.index != null){
                 if(items[item] == items[selectedIndex.currentItem?.index!!]){

@@ -12,6 +12,8 @@ import com.example.itsbeen.data.EventRepository
 import com.example.itsbeen.model.Event
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Calendar
 
 class EventViewModel(private val eventRepository: EventRepository): ViewModel() {
 

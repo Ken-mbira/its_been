@@ -1,5 +1,7 @@
 package com.example.itsbeen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -36,6 +38,7 @@ fun ItsBeenTopBar(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ItsBeenApp(modifier: Modifier = Modifier) {
 
