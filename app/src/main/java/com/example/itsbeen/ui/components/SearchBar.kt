@@ -1,5 +1,6 @@
 package com.example.itsbeen.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,13 +41,21 @@ fun SearchBar(modifier: Modifier = Modifier) {
             label = {
                 Text(
                     text="Search",
-                    color= colorResource(R.color.faded_black),
+                    color= if(isSystemInDarkTheme()){
+                        Color.White
+                    }else{
+                        Color.Black
+                    },
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = colorResource(R.color.light_grey),
+                backgroundColor = if(isSystemInDarkTheme()){
+                    Color.DarkGray
+                }else{
+                    Color.LightGray
+                },
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),

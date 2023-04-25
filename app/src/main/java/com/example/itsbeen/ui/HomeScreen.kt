@@ -40,17 +40,23 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .verticalScroll(scrollState),
     ) {
         PeriodDisplay()
-        Spacer(modifier = modifier.height(40.dp))
+        Spacer(modifier = modifier.height(30.dp))
         SinceDisplay()
-        Spacer(modifier = modifier.height(40.dp))
-        SearchBar()
-        EventList(
-            modifier = modifier,
-            eventList = eventState.value,
-            deleteEvent = {
-                event -> eventViewModel.deleteEvent(event)
-            }
-        )
+        Spacer(modifier = modifier.height(30.dp))
+        Column(
+            modifier = modifier.padding(20.dp)
+        ) {
+            SearchBar()
+            Spacer(modifier = modifier.height(30.dp))
+            EventList(
+                modifier = modifier,
+                eventList = eventState.value,
+                deleteEvent = {
+                        event -> eventViewModel.deleteEvent(event)
+                }
+            )
+        }
+        Spacer(modifier = modifier.height(10.dp))
         Button(
             onClick = { showRegisterEventDialog.value = true },
             modifier = modifier.align(Alignment.CenterHorizontally),

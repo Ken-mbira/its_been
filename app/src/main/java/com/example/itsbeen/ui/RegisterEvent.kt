@@ -2,6 +2,7 @@ package com.example.itsbeen.ui
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,7 +59,13 @@ fun RegisterEvent(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
-            .background(Color.White)
+            .background(
+                if(isSystemInDarkTheme()){
+                    Color.Black
+                }else{
+                    Color.White
+                }
+            )
             .padding(15.dp)
     ) {
         Text(
@@ -77,9 +84,9 @@ fun RegisterEvent(
             modifier = modifier
                 .focusRequester(focusRequester)
                 .onFocusChanged {
-                        if(it.isFocused){
-                            datePickerDialog.show()
-                        }
+                    if (it.isFocused) {
+                        datePickerDialog.show()
+                    }
                 }
             ,
             value = eventDate.value,
