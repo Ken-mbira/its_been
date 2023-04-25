@@ -31,7 +31,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     val showRegisterEventDialog = rememberSaveable { mutableStateOf(false) }
 
     val eventViewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)
-    val eventState = eventViewModel.eventListState.collectAsState()
+    val eventListState = eventViewModel.eventListState.collectAsState()
+    val stagedEventState = eventViewModel.stagedEventState.collectAsState()
 
     Column(
         modifier = modifier
@@ -41,7 +42,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     ) {
         PeriodDisplay()
         Spacer(modifier = modifier.height(30.dp))
-        SinceDisplay()
+        SinceDisplay(
+            modifier = modifier,
+            event = stagedEventState.value,
+        )
         Spacer(modifier = modifier.height(30.dp))
         Column(
             modifier = modifier.padding(20.dp)
@@ -50,9 +54,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             Spacer(modifier = modifier.height(30.dp))
             EventList(
                 modifier = modifier,
-                eventList = eventState.value,
-                deleteEvent = {
-                        event -> eventViewModel.deleteEvent(event)
+                eventList = eventListState.value,
+                deleteEvent = { event ->
+                    eventViewModel.deleteEvent(event)
+                },
+                stageEvent = { event ->
+                    eventViewModel.stageEvent(event)
                 }
             )
         }

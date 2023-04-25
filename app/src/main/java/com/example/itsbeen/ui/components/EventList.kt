@@ -1,9 +1,6 @@
 package com.example.itsbeen.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +26,8 @@ import com.example.itsbeen.model.Event
 fun EventList(
     modifier: Modifier = Modifier,
     eventList: List<Event>,
-    deleteEvent: (Event) -> Unit = {}
+    deleteEvent: (Event) -> Unit = {},
+    stageEvent: (Event) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -50,7 +48,8 @@ fun EventList(
             Event(
                 modifier = modifier,
                 event = eventList[event],
-                deleteEvent = deleteEvent
+                deleteEvent = deleteEvent,
+                stageEvent = stageEvent
             )
         }
         }
@@ -62,6 +61,7 @@ fun Event(
     modifier: Modifier = Modifier,
     event: Event,
     deleteEvent: (Event) -> Unit = {},
+    stageEvent: (Event) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -70,7 +70,9 @@ fun Event(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = modifier.weight(3f)
+            modifier = modifier
+                .weight(3f)
+                .clickable { stageEvent(event) }
         ) {
             Text(
                 text = event.name,

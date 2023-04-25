@@ -18,6 +18,9 @@ class EventViewModel(private val eventRepository: EventRepository): ViewModel() 
     private val _eventListStateFlow = MutableStateFlow(listOf<Event>())
     val eventListState = _eventListStateFlow.asStateFlow()
 
+    private val _stagedEventStateFlow = MutableStateFlow(Event(name = "", date = ""))
+    val stagedEventState = _stagedEventStateFlow.asStateFlow()
+
     fun createEvent(event: Event) {
         viewModelScope.launch {
             eventRepository.addEvent(event)
@@ -30,10 +33,15 @@ class EventViewModel(private val eventRepository: EventRepository): ViewModel() 
         }
     }
 
+    fun stageEvent(event: Event) {
+        _stagedEventStateFlow.update { event }
+    }
+
     init {
         viewModelScope.launch {
             eventRepository.listEvents(null).collect {events ->
                 _eventListStateFlow.update { events }
+                stageEvent(events.first())
             }
         }
     }
