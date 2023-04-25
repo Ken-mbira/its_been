@@ -5,4 +5,5 @@
     <string name="example_description">Independence Day in Kenya</string>
     <string name="create_new_memory">Create New</string>
     <string name="search_icon">Search Icon</string>
+    <string name="delete_icon">Delete Icon</string>
 </resources>
