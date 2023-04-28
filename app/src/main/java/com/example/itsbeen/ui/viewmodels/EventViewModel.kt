@@ -1,5 +1,6 @@
 package com.example.itsbeen.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
 
+const val TAG = "EVENT_VIEW_MODEL"
+
 class EventViewModel(private val eventRepository: EventRepository): ViewModel() {
 
     private val _eventListStateFlow = MutableStateFlow(listOf<Event>())
@@ -22,6 +25,9 @@ class EventViewModel(private val eventRepository: EventRepository): ViewModel() 
 
     private val _stagedEventStateFlow = MutableStateFlow(Event(name = "", date = ""))
     val stagedEventState = _stagedEventStateFlow.asStateFlow()
+
+    private val _eventSearchParam = MutableStateFlow("")
+    val eventSearchParam = _eventSearchParam.asStateFlow()
 
     fun createEvent(event: Event) {
         viewModelScope.launch {
@@ -39,13 +45,38 @@ class EventViewModel(private val eventRepository: EventRepository): ViewModel() 
         _stagedEventStateFlow.update { event }
     }
 
-    init {
+    private fun getEventsList() {
         viewModelScope.launch {
-            eventRepository.listEvents(null).collect {events ->
-                _eventListStateFlow.update { events }
-                stageEvent(events.first())
+            if (eventSearchParam.value == ""){
+                eventRepository.listEvents(null).collect {events ->
+                    _eventListStateFlow.value = events
+                    if (events.isNotEmpty()){
+                        stageEvent(events.first())
+                    }
+                }
+            }else{
+                eventRepository.listEvents(eventSearchParam.value).collect {events ->
+                    _eventListStateFlow.value = events
+                    if (events.isNotEmpty()){
+                        stageEvent(events.first())
+                    }
+                }
             }
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _eventSearchParam.value = query
+    }
+
+    init {
+        viewModelScope.launch {
+            getEventsList()
+        }
+        eventSearchParam
+            .onEach {
+                getEventsList()
+            }.launchIn(viewModelScope)
     }
 
     companion object {

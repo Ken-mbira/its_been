@@ -71,6 +71,4 @@ dependencies {
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    // icu
-    implementation 'com.ibm.icu:icu4j:69.1'
 }

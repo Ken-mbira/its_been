@@ -50,6 +50,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     val eventViewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)
     val eventListState = eventViewModel.eventListState.collectAsState()
     val stagedEventState = eventViewModel.stagedEventState.collectAsState()
+    val searchParamState = eventViewModel.eventSearchParam.collectAsState()
 
     Column(
         modifier = modifier
@@ -57,7 +58,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .verticalScroll(scrollState),
     ) {
-        Log.i(TAG, stagedEventState.value.toString())
         PeriodDisplay(
             modifier = modifier,
             fromDate = parseStringToLocalDate(stagedEventState.value.date)
@@ -71,7 +71,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = modifier.padding(20.dp)
         ) {
-            SearchBar()
+            SearchBar(
+                modifier = modifier,
+                queryParam = searchParamState.value,
+                emitNewQuery = { newQuery -> eventViewModel.updateSearchQuery(newQuery)}
+            )
             Spacer(modifier = modifier.height(30.dp))
             EventList(
                 modifier = modifier,

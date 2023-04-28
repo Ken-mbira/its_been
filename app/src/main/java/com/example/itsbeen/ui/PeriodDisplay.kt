@@ -15,10 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.itsbeen.NumberWords
 import com.example.itsbeen.R
 import com.example.itsbeen.ui.components.SpinnerPicker
-import com.ibm.icu.text.RuleBasedNumberFormat
-import java.text.NumberFormat
 import java.time.Duration
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -55,17 +54,6 @@ fun getDuration(startDate: LocalDate, returnType: String): String {
     }
 }
 
-fun formatDurationWithCommas(duration: String):String {
-    val formatter = NumberFormat.getInstance(Locale.US)
-    return formatter.format(duration.toInt())
-}
-
-fun formatDurationToWords(duration: String): String {
-    val locale = Locale.ENGLISH
-    val formatter = RuleBasedNumberFormat(locale, RuleBasedNumberFormat.SPELLOUT)
-    return formatter.format(duration.toInt())
-}
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PeriodDisplay(
@@ -94,7 +82,7 @@ fun PeriodDisplay(
             ) {
                 Text(
                     text= if(fromDate != null){
-                        formatDurationWithCommas(durationString)
+                        NumberWords().commaSeparated(durationString)
                     }else{
                          "0"
                          },
@@ -102,7 +90,7 @@ fun PeriodDisplay(
                 )
                 Spacer(modifier = modifier.height(5.dp))
                 Text(
-                    text= formatDurationToWords(durationString),
+                    text= NumberWords().convertToWords(durationString),
                     fontSize = 12.sp
                 )
             }

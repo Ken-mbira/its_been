@@ -1,5 +1,6 @@
 package com.example.itsbeen.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,22 +15,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.itsbeen.R
-import com.example.itsbeen.ui.SinceDisplay
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    val textInput = remember { mutableStateOf("") }
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    queryParam: String = "",
+    emitNewQuery: (query: String) -> Unit = {},
+) {
+    val textInput = remember { mutableStateOf(queryParam) }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -37,7 +37,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
         TextField(
             modifier = modifier.weight(1f),
             value = textInput.value,
-            onValueChange = { newValue -> textInput.value = newValue},
+            onValueChange = { newValue -> textInput.value = newValue },
             label = {
                 Text(
                     text="Search",
@@ -62,7 +62,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(25.dp),
         )
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = { emitNewQuery(textInput.value) },
             modifier = modifier.padding(start=10.dp, end=10.dp)
         ) {
             Icon(
