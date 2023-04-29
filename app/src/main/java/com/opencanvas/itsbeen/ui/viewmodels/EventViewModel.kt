@@ -70,6 +70,7 @@ class EventViewModel(private val eventRepository: EventRepository): ViewModel() 
             getEventsList()
         }
         eventSearchParam
+            .debounce(500)
             .onEach {
                 getEventsList()
             }.launchIn(viewModelScope)

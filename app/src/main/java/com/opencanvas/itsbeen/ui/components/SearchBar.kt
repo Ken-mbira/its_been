@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,15 +32,21 @@ fun SearchBar(
     queryParam: String = "",
     emitNewQuery: (query: String) -> Unit = {},
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
     val textInput = remember { mutableStateOf(queryParam) }
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-            modifier = modifier.weight(1f),
-            value = textInput.value,
-            onValueChange = { newValue -> textInput.value = newValue },
+            modifier = modifier
+                .weight(1f)
+                .focusRequester(focusRequester),
+            value = queryParam,
+            onValueChange = { newValue ->
+                emitNewQuery(newValue)
+            },
             label = {
                 Text(
                     text="Search",
@@ -61,13 +71,21 @@ fun SearchBar(
             shape = RoundedCornerShape(25.dp),
         )
         IconButton(
-            onClick = { emitNewQuery(textInput.value) },
+            onClick = {
+                focusManager.clearFocus()
+                emitNewQuery("")
+            },
             modifier = modifier.padding(start=10.dp, end=10.dp)
         ) {
             Icon(
-                imageVector = Icons.Rounded.Search,
+                imageVector = if(queryParam.isBlank()){
+                    Icons.Rounded.Search
+                }else{
+                     Icons.Rounded.Close
+                },
                 contentDescription = stringResource(R.string.search_icon),
-                modifier = modifier.size(40.dp)
+                modifier = modifier
+                    .size(40.dp)
             )
         }
     }

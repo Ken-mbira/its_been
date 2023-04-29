@@ -29,7 +29,9 @@ fun EventList(
     stageEvent: (Event) -> Unit = {}
 ) {
     Card(
-        modifier = modifier.height(300.dp),
+        modifier = modifier
+            .height(300.dp)
+            .fillMaxWidth(),
         backgroundColor =
             if(isSystemInDarkTheme()){
                 Color.DarkGray
