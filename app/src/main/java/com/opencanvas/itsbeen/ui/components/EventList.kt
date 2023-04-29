@@ -24,11 +24,12 @@ import com.opencanvas.itsbeen.model.Event
 fun EventList(
     modifier: Modifier = Modifier,
     eventList: List<Event>,
+    currentQuery: String = "",
     deleteEvent: (Event) -> Unit = {},
     stageEvent: (Event) -> Unit = {}
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.height(300.dp),
         backgroundColor =
             if(isSystemInDarkTheme()){
                 Color.DarkGray
@@ -37,18 +38,21 @@ fun EventList(
             },
         elevation = 10.dp
     ) {
-        LazyColumn(
-            modifier = modifier
-                .height(300.dp)
-                .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {items(eventList.count()) {event ->
-            Event(
-                modifier = modifier,
-                event = eventList[event],
-                deleteEvent = deleteEvent,
-                stageEvent = stageEvent
-            )
+        if(eventList.isEmpty() && currentQuery.isBlank()){
+            EmptyList()
+        }else{
+            LazyColumn(
+                modifier = modifier
+                    .padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {items(eventList.count()) {event ->
+                Event(
+                    modifier = modifier,
+                    event = eventList[event],
+                    deleteEvent = deleteEvent,
+                    stageEvent = stageEvent
+                )
+            }
         }
         }
     }

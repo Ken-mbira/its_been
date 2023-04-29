@@ -6,4 +6,6 @@
     <string name="create_new_memory">Create New</string>
     <string name="search_icon">Search Icon</string>
     <string name="delete_icon">Delete Icon</string>
+    <string name="add_first_event">Add the first event</string>
+    <string name="point_down">point_down</string>
 </resources>

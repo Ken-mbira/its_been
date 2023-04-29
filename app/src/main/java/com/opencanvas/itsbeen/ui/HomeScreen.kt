@@ -77,6 +77,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             EventList(
                 modifier = modifier,
                 eventList = eventListState.value,
+                currentQuery = searchParamState.value,
                 deleteEvent = { event ->
                     eventViewModel.deleteEvent(event)
                 },
