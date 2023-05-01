@@ -1,9 +1,11 @@
 package com.opencanvas.itsbeen
 
+import androidx.annotation.VisibleForTesting
 import java.util.*
 
 const val TAG = "NUMBER_WORDS"
 
+@VisibleForTesting
 class NumberWords {
     companion object {
         private val ones_array = listOf(

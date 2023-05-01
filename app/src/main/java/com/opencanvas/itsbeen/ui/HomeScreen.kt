@@ -2,6 +2,8 @@ package com.opencanvas.itsbeen.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,10 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,6 +44,8 @@ fun parseStringToLocalDate(dateString: String): LocalDate? {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     val scrollState = rememberScrollState()
     val showRegisterEventDialog = rememberSaveable { mutableStateOf(false) }
@@ -53,7 +59,14 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(10.dp)
             .fillMaxSize()
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .clickable(
+                interactionSource,
+                indication = null,
+                onClick = {
+                    focusManager.clearFocus()
+                }
+            ),
     ) {
         PeriodDisplay(
             modifier = modifier,
